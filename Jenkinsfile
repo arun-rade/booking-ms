@@ -23,10 +23,11 @@ pipeline {
 			}
 		}
 
-		stage('Code Packaging') {
+
+		stage('check java , mvn , git version') {
 			steps {
-				echo 'Packaging code......'
-				sh 'mvn clean package'
+				echo 'version check the code'
+				sh 'git --version; java --version; /opt/apache-maven-3.9.9/bin/mvn --version'
 			}
 		}
 	}
