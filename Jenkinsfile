@@ -16,8 +16,8 @@ pipeline {
 			}
 		}
 
-		stage('Code Packajing') {
-			steps{
+		stage('Code Packaging') {
+			steps {
 				echo 'Packaging code......'
 				sh 'mvn clean package'
 			}
