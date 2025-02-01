@@ -1,5 +1,5 @@
 pipeline {
-    agent { label "teamA-jslave' }
+    agent { label 'teamA-jslave' }
 
 	options {
 		buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
