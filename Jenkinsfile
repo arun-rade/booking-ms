@@ -35,7 +35,7 @@ pipeline {
 		stage('Build & Tag Docker Image') {
 			steps {
 				echo 'Building Docker Image with Tags...'
-				sh "docker build -t satyam88/booking-ms:latest -t booking-ms:latest ."
+				sh "docker build -t arunrade/booking-ms:latest -t booking-ms:latest ."
 				echo 'Docker Image Build Completed!'
 			}
 		}
@@ -51,7 +51,7 @@ pipeline {
 					withCredentials([string(credentialsId: 'dockerhubCred', variable: 'dockerhubCred')]) {
 						sh 'docker login docker.io -u satyam88 -p ${dockerhubCred}'
 						echo 'Pushing Docker Image to Docker Hub...'
-						sh 'docker push satyam88/booking-ms:latest'
+						sh 'docker push arunrade/booking-ms:latest'
 						echo 'Docker Image Pushed to Docker Hub Successfully!'
 					}
 				}
