@@ -25,6 +25,22 @@ pipeline {
 				echo 'JUnit Test Cases Completed Successfully!'
 			}
 		}
+		stage('SonarQube Code Quality') {
+            environment {
+                scannerHome = tool 'qube'
+            }
+            steps {
+                echo 'Starting SonarQube Code Quality Scan...'
+                withSonarQubeEnv('sonar-server') {
+                    sh 'mvn sonar:sonar'
+                }
+                echo 'SonarQube Scan Completed. Checking Quality Gate...'
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+                echo 'Quality Gate Check Completed!'
+            }
+        }
 		stage('Code Package') {
 			steps {
 				echo 'Creating JAR Artifact...'
@@ -85,5 +101,17 @@ pipeline {
 				}
 			}
 		}
+        stage('Clean Up Local Docker Images') {
+            steps {
+                echo 'Cleaning Up Local Docker Images...'
+                sh '''
+                    docker rmi arunrade/booking-ms:latest || echo "Image not found or already deleted"
+                    docker rmi booking-ms:latest || echo "Image not found or already deleted"
+                    docker rmi 703671926591.dkr.ecr.ap-south-1.amazonaws.com/booking-ms:latest || echo "Image not found or already deleted"
+                    docker image prune -f
+                '''
+                echo 'Local Docker Images Cleaned Up Successfully!'
+            }
+        }
 	}
 }
